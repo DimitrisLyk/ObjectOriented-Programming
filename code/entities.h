@@ -1,3 +1,5 @@
+using namespace std;
+
 class Entity{
     private:
         unsigned short int health;
@@ -18,14 +20,23 @@ class Entity{
 
 };
 
+
 class Map{
     private:
-        void GenerateTerrain();
-        void GenerateWater();
-        void GenerateTrees();
-
+        //unsigned short int X, Y;
+        //Map(int width, int height) : X(width), Y(height) {}
+        
+        //unsigned short int get_X() const { return X; }
+        //unsigned short int get_Y() const { return Y; };
+        //vector<vector<char>> world;
+        void GenerateMap(Map& map);
+        void PrintMap(Map& map) const;
     public:
-        void MapGenerator();
+        //Map();
+        //~Map();
+        vector<vector<char>> world;
+        void MapGenerator(Map& map);
+        void MapPrinter(Map& map);
 
 };
 

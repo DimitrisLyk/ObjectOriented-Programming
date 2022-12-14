@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstdlib> // for rand() and srand()
 #include <ctime> // for time()
+#include <vector>
+#include "entities.h"
 
 using namespace std;
 
@@ -41,13 +43,17 @@ void Key(){
 }
 */
 
+
 int main(){
-    int X, Y;
-    cout <<  "Enter dimensions" <<endl;
-    cin >> X >> Y;
-    cout << X << " " << Y <<endl;
+  srand(time(0));
+  //unsigned short int X, Y;
+  //cout <<  "Enter dimensions" <<endl;
+  //cin >> X >> Y;
 
-    srand(time(0));
+  Map map;
+  map.MapGenerator(map);
+  map.MapPrinter(map);
 
-
+  return 0;
+  
 }
