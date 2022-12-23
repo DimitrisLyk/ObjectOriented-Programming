@@ -1,34 +1,9 @@
 using namespace std;
 
-class Entity{
-    private:
-        unsigned short int health;
-        unsigned short int attack;
-        unsigned short int defence;
-        unsigned short int x;
-        unsigned short int y;
-
-    public:
-        unsigned short int get_health() const { return health; }
-        unsigned short int get_attack() const { return attack; }
-        unsigned short int get_defence() const { return defence;}
-        unsigned short int get_x() const { return x;}
-        unsigned short int get_y() const { return y;};
-
-        void InitializeAbilities();
-        void UpdatePosition(int dx, int dy);
-
-};
-
+extern bool runner;
 
 class Map{
     private:
-        //unsigned short int X, Y;
-        //Map(int width, int height) : X(width), Y(height) {}
-        
-        //unsigned short int get_X() const { return X; }
-        //unsigned short int get_Y() const { return Y; };
-        //vector<vector<char>> world;
         void GenerateMap(Map& map);
         void PrintMap(Map& map) const;
     public:
@@ -37,22 +12,85 @@ class Map{
         vector<vector<char>> world;
         void MapGenerator(Map& map);
         void MapPrinter(Map& map);
+};
+
+class Entity{
+    private:
+        unsigned short int healing;
+        unsigned short int health;
+        unsigned short int attack;
+        unsigned short int defence;
+        unsigned short int x;
+        unsigned short int y;
+        void SpawnInPosition(Map& map);
+        char SYMBOL;
+    public:
+        Entity() {};
+        unsigned short int get_health() const { return health; };
+        unsigned short int get_attack() const { return attack; };
+        unsigned short int get_defence() const { return defence;};
+        unsigned short int get_healing() const { return healing;};
+        unsigned short int get_x() const { return x;};
+        unsigned short int get_y() const { return y;};
+        void get_attacked(int dmg, int def) { health = health + (def - dmg);};
+        void get_healed() { health = health + 1;};
+        void symbol_set(char s) {SYMBOL = s;};
+        char get_symbol() const { return SYMBOL;};
+        void InitializeAbilities();
+        void UpdatePosition(Map& map,int pos);
+        void SpawnInMap(Map& map);
+        void ReduceHealing(){ healing--;};
+        void IncreaseHealth(){ health++;}
+        virtual int CheckInMap(Map& map);
+        virtual int CheckInMapAly(Map& map);
 
 };
 
 
 
-class Werewolf : public Entity{
-    //public:
-        //Werewolf() : Animal() {}
-
+class Werewolf:public Entity{
+    private:
+        char S = 'W';
+    public:
+        Werewolf() {symbol_set(S);};
+        ~Werewolf() {cout <<"Werewolf killed"<<endl;};
+        int CheckInMap(Map& map);
+        int CheckInMapAly(Map& map);
 
 };
 
-class Vampire : public Entity{
-
+class Vampire:public Entity{
+    private:
+        char S = 'V';
+    public:
+        Vampire() {symbol_set(S);};
+        ~Vampire() {cout <<"Vampire killed"<<endl;};
 };
 
-class Avatar : public Entity{
+class Avatar:public Entity{
+    private:
+        int magic_potion = 1;
+        char S = 'A';
+    public:
+        Avatar() {symbol_set(S);};
+        char AvatarMove(Map& map);
+        unsigned short int get_magic_potion() const { return magic_potion;};
+
+
         
+};
+
+class Game {
+    private:
+        vector<Vampire> vamps;
+        vector<Werewolf> weres;
+        Avatar av;
+        int counter;
+        bool time;
+    public:
+        void GameKiller(Map& map, int a, int b, int c);
+        int GameHealer(Map& map, int a, int b);
+        void GameGenerator(Map& map);
+        void GameUpdater(Map& map);
+        void GameEnder(Map& map);
 };
